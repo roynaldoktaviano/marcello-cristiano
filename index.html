@@ -68,6 +68,7 @@
   .cover-body{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
   .cover .photo{width:168px;height:168px;border-radius:50%;margin:22px auto 16px;padding:4px;background:var(--gold-grad)}
   .cover .photo .ph{width:100%;height:100%;border-radius:50%;border:0;background-color:#fff}
+  .cover .photo .ph.filled{background-size:var(--zoom,160%);background-position:50% var(--posY,8%)}
   .cover .t-nama{font-size:42px;margin-top:0}
   .cover .to{color:var(--abu);margin-top:18px;font-size:14px}
   .cover .guest{font-weight:700;font-size:19px;color:var(--navy);margin:2px 0 22px}
@@ -371,7 +372,12 @@
    CONFIG — ISI BAGIAN INI DENGAN FOTO & DATA KAMU
    ===================================================== */
 const CONFIG = {
-  fotoCover: "chiro.jpg",        // foto bulat di halaman pembuka, contoh: "chiro-cover.jpg"
+  fotoCover: "chiro.jpg",
+  // Atur posisi foto bulat di cover:
+  //   coverZoom  : makin besar = wajah makin dekat (contoh 130, 160, 200)
+  //   coverPosisi: 0 = bagian paling atas foto, makin besar = foto turun
+  coverZoom:   160,
+  coverPosisi: 8,        // foto bulat di halaman pembuka, contoh: "chiro-cover.jpg"
   latar:     "stadion.jpg",        // gambar latar stadion (samar), contoh: "stadion.jpg"
   logoKiri:  "logo.webp",        // logo besar samar di pojok kiri atas, contoh: "logo.png"
   logoKanan: "logo.webp",        // logo besar samar di pojok kanan atas
@@ -392,6 +398,9 @@ function fill(el, src){
   el.classList.add('filled');
 }
 fill(document.getElementById('phCover'), CONFIG.fotoCover);
+(function(){ const c=document.getElementById('phCover');
+  c.style.setProperty('--zoom',(CONFIG.coverZoom||160)+'%');
+  c.style.setProperty('--posY',(CONFIG.coverPosisi==null?8:CONFIG.coverPosisi)+'%'); })();
 fill(document.getElementById('phBg'), CONFIG.latar);
 fill(document.getElementById('phLogoKiri'), CONFIG.logoKiri);
 fill(document.getElementById('phLogoKanan'), CONFIG.logoKanan);

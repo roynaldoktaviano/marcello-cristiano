@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Undangan Komuni Pertama Chiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
+<!--
+  =====================================================
+  CARA MEMASUKKAN FOTO & ASSET
+  Cari bagian "CONFIG" di dalam <script> (dekat akhir file).
+  Isi nama file di antara tanda kutip, misalnya:
+      fotoUtama: "chiro.jpg",
+  Simpan semua file gambar di folder yang sama dengan file HTML ini.
+  Kalau dikosongkan (""), kotak placeholder tetap tampil.
+  =====================================================
+-->
+<style>
+  :root{
+    --putih:#FFFFFF;
+    --kabut:#F4F6FA;
+    --navy:#1A2A5E;
+    --biru:#1B3A8C;
+    --emas:#B8923A;
+    --emas-muda:#E3CC88;
+    --tinta:#26262B;
+    --abu:#6B7390;
+    --garis:#E6E9F0;
+    --gold-grad:linear-gradient(90deg,#9C7428,#E9D38E 30%,#B8923A 55%,#F3E3A6 75%,#9C7428);
+    --script:"Lobster", "Brush Script MT", cursive;
+    --sans:"Open Sans", "Segoe UI", Arial, sans-serif;
+    --pad:28px;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+  body{margin:0;background:#E7EAF1;color:var(--tinta);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  p{margin:0}
+  p,li{text-wrap:balance}
+  button,a{font:inherit}
+  :focus-visible{outline:3px solid var(--emas);outline-offset:3px}
+  .wrap{max-width:460px;margin:0 auto;background:var(--putih);min-height:100vh;overflow:hidden;position:relative;box-shadow:0 0 40px rgba(26,42,94,.12)}
+  .goldbar{height:8px;background:var(--gold-grad)}
+
+  /* ---------- Placeholder ---------- */
+  .ph{position:relative;background:var(--kabut);border:1.5px dashed #B9C1D8;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center;color:var(--abu);font-size:12px;font-weight:600;line-height:1.3;background-size:cover;background-position:center;background-repeat:no-repeat}
+  .ph svg{width:22px;height:22px;opacity:.6}
+  .ph.filled{border:0;background-color:transparent}
+  .ph.filled > *{display:none}
+
+  /* ---------- Tipografi ---------- */
+  .t-undangan{font-family:var(--sans);font-weight:700;font-size:30px;line-height:1;letter-spacing:.14em;
+    background:linear-gradient(180deg,#6A531B,#2E2408);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .t-komuni{font-family:var(--script);font-size:36px;line-height:1.15;color:var(--navy);margin-top:6px}
+  .t-nama{font-family:var(--script);font-size:34px;line-height:1.15;color:#1B1B22;margin-top:14px;text-shadow:0 2px 4px rgba(0,0,0,.12)}
+  .kecil{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--emas)}
+  h2{font-family:var(--script);font-weight:400;font-size:32px;line-height:1.1;color:var(--navy);margin:0}
+  .orn{display:block;width:120px;height:14px;margin:10px auto 18px}
+  .sub{color:var(--abu);font-size:14px;max-width:36ch;margin:0 auto 20px}
+
+  /* ---------- Cover ---------- */
+  .cover{position:fixed;inset:0;z-index:50;background:var(--putih);display:flex;flex-direction:column;transition:transform .9s cubic-bezier(.7,0,.2,1)}
+  .cover.open{transform:translateY(-100%)}
+  .cover-body{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+  .cover .photo{width:168px;height:168px;border-radius:50%;margin:22px auto 16px;padding:4px;background:var(--gold-grad)}
+  .cover .photo .ph{width:100%;height:100%;border-radius:50%;border:0;background-color:#fff}
+  .cover .t-nama{font-size:42px;margin-top:0}
+  .cover .to{color:var(--abu);margin-top:18px;font-size:14px}
+  .cover .guest{font-weight:700;font-size:19px;color:var(--navy);margin:2px 0 22px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;background:var(--navy);color:var(--putih);border:2px solid var(--emas);border-radius:999px;padding:10px 26px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none}
+  .btn:hover{background:var(--biru)}
+
+  /* ---------- Section ---------- */
+  .sec{position:relative;padding:40px var(--pad);text-align:center}
+  .sec + .sec{border-top:1px solid var(--garis)}
+  .sec.soft{background:var(--kabut)}
+
+  /* kepala undangan */
+  .head{padding-top:36px;overflow:hidden}
+  .bg-lines{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+  .bg-stadium{position:absolute;inset:0;z-index:0;opacity:.3}
+  .bg-stadium:not(.filled){display:none}
+  .head > .in{position:relative;z-index:1}
+  .logos{display:flex;justify-content:space-between;align-items:center;margin-bottom:-58px}
+  .logo{width:58px;height:58px;border-radius:50%;font-size:10px}
+  .logo.filled{background-size:contain}
+  .parents{margin-top:16px}
+  .parents .names{font-weight:700;font-size:16px;line-height:1.5;margin-top:4px}
+  .rule{height:1.5px;border:0;background:var(--gold-grad);margin:22px auto;width:72%}
+  .ajak{font-size:16px;max-width:34ch;margin:0 auto}
+  .ajak em{font-style:italic;font-weight:700;color:var(--navy)}
+
+  /* tanggal & waktu */
+  .when{display:grid;grid-template-columns:1fr 1px 1fr;align-items:stretch;margin-top:30px}
+  .when .sep{background:linear-gradient(transparent,var(--emas-muda) 20%,var(--emas-muda) 80%,transparent)}
+  .when .col{display:flex;flex-direction:column;align-items:center;padding:0 8px}
+  .when .ico{height:78px;display:flex;align-items:center;justify-content:center}
+  .ticket{width:140px;height:73px}
+  .clock{width:76px;height:76px}
+  .when .kecil{margin-top:14px}
+  .when .val{font-weight:700;font-size:16px;line-height:1.35;margin-top:4px;color:var(--tinta)}
+  .when .note{font-size:13px;color:var(--abu)}
+
+  /* lokasi gawang */
+  .goal{position:relative;margin:48px auto 0;max-width:320px;padding:28px 16px 34px;border:5px solid;border-image:var(--gold-grad) 1;
+    background:
+      linear-gradient(to top,rgba(62,142,58,.85) 0,rgba(62,142,58,.3) 16%,transparent 26%),
+      repeating-linear-gradient(0deg,rgba(26,42,94,.09) 0 1px,transparent 1px 11px),
+      repeating-linear-gradient(90deg,rgba(26,42,94,.09) 0 1px,transparent 1px 11px),#fff}
+  .goal .pin{position:absolute;left:50%;top:-24px;transform:translateX(-50%);width:30px;height:40px}
+  .goal .place{font-weight:700;font-size:18px;line-height:1.3;color:#15151A;margin-top:4px}
+  .goal .area{font-weight:600;font-size:15px;color:#15151A}
+  .addr{font-size:13px;color:var(--abu);margin:12px auto 18px;max-width:30ch}
+
+  /* countdown */
+  .count-title{margin-top:34px;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--emas);display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase}
+  .live{width:8px;height:8px;border-radius:50%;background:#3E8E3A;box-shadow:0 0 0 0 rgba(62,142,58,.5);animation:live 1.6s infinite}
+  @keyframes live{0%{box-shadow:0 0 0 0 rgba(62,142,58,.55)}100%{box-shadow:0 0 0 9px rgba(62,142,58,0)}}
+  .count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .count b.tick{animation:tickb .45s ease-out}
+  @keyframes tickb{0%{transform:translateY(-6px);opacity:.2}100%{transform:none;opacity:1}}
+  .count div{border:1.5px solid var(--emas-muda);border-radius:10px;padding:10px 2px 8px;background:var(--putih)}
+  .count b{display:block;font-family:var(--sans);font-weight:700;font-size:24px;line-height:1.1;color:var(--navy)}
+  .count small{font-size:12px;color:var(--abu)}
+  .count-done{margin-top:24px;font-family:var(--script);font-size:24px;color:var(--navy);display:none}
+
+  /* ayat */
+  .chalice{width:34px;height:42px;margin:0 auto 14px;display:block}
+  .verse{font-style:italic;font-size:16px;max-width:30ch;margin:0 auto}
+  .ref{margin-top:10px}
+
+  /* dresscode */
+  .swatches{display:flex;justify-content:center;gap:32px}
+  .sw i{display:block;width:66px;height:66px;border-radius:50%;margin:0 auto 8px;border:3px solid var(--emas-muda)}
+  .sw.p i{background:var(--putih)}
+  .sw.b i{background:var(--biru)}
+  .sw span{font-weight:700;font-size:15px}
+
+  /* galeri */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid .ph{aspect-ratio:4/5;border-radius:10px}
+  .grid .ph.wide{grid-column:1/-1;aspect-ratio:4/5}
+  .grid .ph.filled{background-position:50% 18%}
+  .grid .ph.filled{cursor:pointer}
+  .lightbox{position:fixed;inset:0;z-index:60;background:rgba(14,20,45,.94);display:none;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(20px + env(safe-area-inset-bottom,0px))}
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:100%;max-height:82vh;border-radius:6px}
+  .lb-btn{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;width:44px;height:44px;border-radius:50%;font-size:24px;line-height:1;cursor:pointer}
+  .lb-close{top:calc(14px + env(safe-area-inset-top,0px));right:14px}
+  .lb-prev{left:10px;top:50%;transform:translateY(-50%)}
+  .lb-next{right:10px;top:50%;transform:translateY(-50%)}
+
+  .closing{font-size:15px;color:var(--abu);max-width:32ch;margin:0 auto}
+  .sign{font-family:var(--script);font-size:24px;color:var(--navy);margin-top:6px}
+
+  .music{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:46px;height:46px;border-radius:50%;border:2px solid var(--emas);background:var(--navy);color:#fff;cursor:pointer;display:none;align-items:center;justify-content:center}
+  .music.show{display:flex}
+  .music .ic-play{display:none}
+  .music.playing .ic-play{display:block;animation:bob 1.2s ease-in-out infinite}
+  .music.playing .ic-mute{display:none}
+  @keyframes bob{50%{transform:translateY(-2px) rotate(-6deg)}}
+
+  @media (max-width:380px){
+    :root{--pad:20px}
+    .t-undangan{font-size:26px}.t-komuni{font-size:31px}.t-nama{font-size:29px}
+    .logo{width:48px;height:48px}.logos{margin-bottom:-48px}
+    .ticket{width:122px;height:64px}
+    .parents .names{font-size:14px}.when .val{font-size:14px}.when .col{padding:0 4px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .live,.count b.tick{animation:none}
+    .cover{transition:none}.music.playing .ic-play{animation:none}html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SVG yang dipakai ulang ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gGold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#9C7428"/><stop offset=".4" stop-color="#F3E3A6"/><stop offset=".7" stop-color="#B8923A"/><stop offset="1" stop-color="#8A6520"/>
+    </linearGradient>
+    <linearGradient id="gNavy" x1="0" x2="1"><stop offset="0" stop-color="#0F1C45"/><stop offset=".5" stop-color="#3B5AA8"/><stop offset="1" stop-color="#0F1C45"/></linearGradient>
+    <symbol id="orn" viewBox="0 0 120 14">
+      <line x1="0" y1="7" x2="46" y2="7" stroke="#D9BD73" stroke-width="1.2"/>
+      <line x1="74" y1="7" x2="120" y2="7" stroke="#D9BD73" stroke-width="1.2"/>
+      <circle cx="60" cy="7" r="6" fill="#fff" stroke="#1A2A5E" stroke-width="1.3"/>
+      <polygon points="60,4 62.8,6 61.8,9.2 58.2,9.2 57.2,6" fill="#1A2A5E"/>
+      <circle cx="50" cy="7" r="1.6" fill="#B8923A"/><circle cx="70" cy="7" r="1.6" fill="#B8923A"/>
+    </symbol>
+    <symbol id="cam" viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v13H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= COVER ================= -->
+<div class="cover" id="cover">
+  <div class="goldbar"></div>
+  <div class="cover-body">
+    <div>
+      <p class="t-undangan">UNDANGAN</p>
+      <p class="t-komuni">Komuni Pertama</p>
+      <!-- PLACEHOLDER: foto bulat Chiro (CONFIG.fotoCover) -->
+      <div class="photo"><div class="ph" id="phCover"><svg><use href="#cam"/></svg><span>Foto Chiro</span></div></div>
+      <p class="t-nama">Chiro</p>
+      <p class="to">Kepada Yth.</p>
+      <p class="guest" id="guestName">Bapak/Ibu/Saudara/i</p>
+      <button class="btn" id="openBtn" type="button">Buka undangan</button>
+    </div>
+  </div>
+  <div class="goldbar"></div>
+</div>
+
+<div class="wrap">
+  <div class="goldbar"></div>
+
+  <!-- ================= KEPALA UNDANGAN ================= -->
+  <section class="sec head">
+    <!-- PLACEHOLDER: gambar latar stadion samar (CONFIG.latar) -->
+    <div class="ph bg-stadium" id="phBg"></div>
+    <svg class="bg-lines" viewBox="0 0 400 1000" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="none" stroke="#EDF0F5" stroke-width="2">
+        <line x1="0" y1="640" x2="400" y2="640"/><circle cx="200" cy="640" r="80"/>
+      </g>
+    </svg>
+    <div class="in">
+      <!-- PLACEHOLDER: logo kiri & kanan (CONFIG.logoKiri / logoKanan) -->
+      <div class="logos">
+        <div class="ph logo" id="phLogoKiri"><span>Logo</span></div>
+        <div class="ph logo" id="phLogoKanan"><span>Logo</span></div>
+      </div>
+      <p class="t-undangan">UNDANGAN</p>
+      <p class="t-komuni">Komuni Pertama</p>
+      <p class="t-nama">Marcello Cristiano<br>J.S Meko</p>
+
+      <div class="parents">
+        <p class="kecil">PUTRA PERTAMA DARI</p>
+        <p class="names">Bapak Krisologus B. Meko<br>Mama Ermelinda Chusmiarti Meze Daeng</p>
+      </div>
+
+      <hr class="rule">
+
+      <p class="ajak">Hari ini, hari bahagia <em>Chiro</em> dan akan menjadi istimewa bila Opa - Oma / Bapak - Ibu / Om - Tanta / Kakak - Adik &amp; teman-teman dapat mengambil bagian bersama <em>Chiro</em> dan keluarga dalam Acara Ramah Tamah Sederhana pada:</p>
+
+      <div class="when">
+        <div class="col">
+          <div class="ico">
+          <svg class="ticket" viewBox="0 0 150 78" aria-label="Tanggal 27 September">
+            <path d="M8 4h134a4 4 0 0 0 4 4v10a6 6 0 0 0 0 12v18a6 6 0 0 0 0 12v10a4 4 0 0 0-4 4H8a4 4 0 0 0-4-4V60a6 6 0 0 0 0-12V30a6 6 0 0 0 0-12V8a4 4 0 0 0 4-4z" fill="url(#gGold)"/>
+            <rect x="14" y="10" width="86" height="58" rx="3" fill="#fff"/>
+            <rect x="14" y="10" width="86" height="17" rx="3" fill="#1A2A5E"/>
+            <text x="57" y="23" text-anchor="middle" font-family="Open Sans,Arial,sans-serif" font-weight="700" font-size="13" fill="#fff">SEP</text>
+            <text x="57" y="61" text-anchor="middle" font-family="Open Sans,Arial,sans-serif" font-weight="700" font-size="34" fill="#15151A">27</text>
+            <line x1="107" y1="10" x2="107" y2="68" stroke="#8A6520" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="126" cy="39" r="14" fill="#fff" stroke="#8A6520" stroke-width="1.5" stroke-dasharray="3 2" id="ticketSlot"/>
+            <image id="ticketLogo" x="112" y="25" width="28" height="28" href="" preserveAspectRatio="xMidYMid meet"/>
+          </svg>
+          </div>
+          <p class="kecil">HARI &amp; TANGGAL</p>
+          <p class="val">Minggu<br>27 September 2026</p>
+        </div>
+        <div class="sep"></div>
+        <div class="col">
+          <div class="ico">
+          <svg class="clock" viewBox="0 0 100 100" aria-label="Pukul 14.00">
+            <defs><radialGradient id="gFace" cx=".4" cy=".35"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#E4E6EB"/></radialGradient></defs>
+            <circle cx="50" cy="50" r="48" fill="#8D9097"/><circle cx="50" cy="50" r="45" fill="#C9CCD2"/>
+            <circle cx="50" cy="50" r="40" fill="url(#gFace)"/>
+            <g stroke="#26262B" stroke-width="2.5" stroke-linecap="round">
+              <line x1="50" y1="13" x2="50" y2="19"/><line x1="50" y1="81" x2="50" y2="87"/>
+              <line x1="13" y1="50" x2="19" y2="50"/><line x1="81" y1="50" x2="87" y2="50"/>
+            </g>
+            <g stroke="#26262B" stroke-width="1.5" stroke-linecap="round">
+              <line x1="68.5" y1="18" x2="66.5" y2="21.5"/><line x1="82" y1="31.5" x2="78.5" y2="33.5"/><line x1="82" y1="68.5" x2="78.5" y2="66.5"/><line x1="68.5" y1="82" x2="66.5" y2="78.5"/>
+              <line x1="31.5" y1="82" x2="33.5" y2="78.5"/><line x1="18" y1="68.5" x2="21.5" y2="66.5"/><line x1="18" y1="31.5" x2="21.5" y2="33.5"/><line x1="31.5" y1="18" x2="33.5" y2="21.5"/>
+            </g>
+            <line x1="50" y1="50" x2="68" y2="39.6" stroke="#15151A" stroke-width="4" stroke-linecap="round"/>
+            <line x1="50" y1="50" x2="50" y2="18" stroke="#15151A" stroke-width="3" stroke-linecap="round"/>
+            <line x1="50" y1="56" x2="38" y2="24" stroke="#C0392B" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="3" fill="#15151A"/>
+          </svg>
+          </div>
+          <p class="kecil">WAKTU</p>
+          <p class="val">14.00 WITA</p>
+          <p class="note">sampai selesai</p>
+        </div>
+      </div>
+
+      <div class="goal">
+        <svg class="pin" viewBox="0 0 32 42" aria-hidden="true"><path d="M16 1C8 1 2 7 2 15c0 10 14 26 14 26s14-16 14-26C30 7 24 1 16 1z" fill="#3E8E3A" stroke="#2A6627" stroke-width="1.5"/><circle cx="16" cy="15" r="5.5" fill="#fff"/></svg>
+        <p class="kecil">LOKASI</p>
+        <p class="place">Rumah Bapak Nano Meko</p>
+        <p class="area">Lego - Boawae</p>
+      </div>
+      <p class="addr">Belakang SDI Lego, Kel. Natanage Timur, Kec. Boawae</p>
+      <a class="btn" id="mapsBtn" href="#" target="_blank" rel="noopener">Lihat lokasi di Maps</a>
+
+      <p class="count-title" id="countTitle"><i class="live"></i>Menuju hari bahagia</p>
+      <div class="count" id="count">
+        <div><b id="cD">0</b><small>Hari</small></div>
+        <div><b id="cH">0</b><small>Jam</small></div>
+        <div><b id="cM">0</b><small>Menit</small></div>
+        <div><b id="cS">0</b><small>Detik</small></div>
+      </div>
+      <div class="count-done" id="countDone">Hari bahagia telah tiba</div>
+    </div>
+  </section>
+
+  <!-- ================= AYAT ================= -->
+  <section class="sec soft">
+    <svg class="chalice" viewBox="0 0 40 48" aria-hidden="true">
+      <circle cx="20" cy="6" r="5" fill="none" stroke="#B8923A" stroke-width="2"/><path d="M20 3v6M17 6h6" stroke="#B8923A" stroke-width="1.5"/>
+      <path d="M6 14h28c0 10-6 17-14 17S6 24 6 14z" fill="url(#gGold)"/><path d="M18 31h4v8h-4z" fill="#B8923A"/><path d="M10 39h20l2 6H8z" fill="url(#gGold)"/>
+    </svg>
+    <p class="verse">“Akulah roti hidup yang telah turun dari surga. Jikalau seorang makan dari roti ini, ia akan hidup selama-lamanya.”</p>
+    <p class="kecil ref">YOHANES 6:51</p>
+  </section>
+
+  <!-- ================= DRESSCODE ================= -->
+  <section class="sec">
+    <h2>Dresscode</h2>
+    <svg class="orn"><use href="#orn"/></svg>
+    <p class="sub">Kami senang bila Bapak/Ibu/Saudara/i hadir mengenakan warna</p>
+    <div class="swatches">
+      <div class="sw p"><i></i><span>Putih</span></div>
+      <div class="sw b"><i></i><span>Biru</span></div>
+    </div>
+  </section>
+
+  <!-- ================= GALERI ================= -->
+  <section class="sec soft">
+    <h2>Galeri Chiro</h2>
+    <svg class="orn"><use href="#orn"/></svg>
+    <p class="sub">Ketuk foto untuk melihat lebih besar</p>
+    <!-- PLACEHOLDER: foto galeri (CONFIG.galeri). Foto pertama tampil lebar -->
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- ================= PENUTUP ================= -->
+  <section class="sec">
+    <p class="closing">Kehadiran dan doa restu Bapak/Ibu/Saudara/i merupakan kebahagiaan bagi kami. Terima kasih, Tuhan memberkati.</p>
+    <p class="sign">Keluarga Besar Meko</p>
+  </section>
+
+  <div class="goldbar"></div>
+</div>
+
+<!-- Lightbox galeri -->
+<div class="lightbox" id="lb" role="dialog" aria-label="Foto galeri">
+  <img id="lbImg" alt="Foto Chiro">
+  <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Tutup">×</button>
+  <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Foto sebelumnya">‹</button>
+  <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Foto berikutnya">›</button>
+</div>
+
+<button class="music" id="musicBtn" type="button" aria-label="Putar atau jeda musik">
+  <svg class="ic-play" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.8" fill="currentColor"/><circle cx="17.5" cy="16" r="2.8" fill="currentColor"/></svg>
+  <svg class="ic-mute" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" opacity=".55"/><circle cx="6.5" cy="18" r="2.8" fill="currentColor" opacity=".55"/><circle cx="17.5" cy="16" r="2.8" fill="currentColor" opacity=".55"/><line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+</button>
+<audio id="audio" loop></audio>
+
+<script>
+/* =====================================================
+   CONFIG — ISI BAGIAN INI DENGAN FOTO & DATA KAMU
+   ===================================================== */
+const CONFIG = {
+  fotoCover: "chiro.jpg",        // foto bulat di halaman pembuka, contoh: "chiro-cover.jpg"
+  latar:     "stadion.jpg",        // gambar latar stadion (samar), contoh: "stadion.jpg"
+  logoKiri:  "logo.png",        // logo besar samar di pojok kiri atas, contoh: "logo.png"
+  logoKanan: "logo.png",        // logo besar samar di pojok kanan atas
+  logoTiket: "logo-tiket.png",        // logo kecil di sobekan tiket tanggal
+
+  // Galeri 3 foto potret: foto pertama tampil besar, 2 foto di bawahnya.
+  galeri: ["chiro.jpg", "foto1.jpg", "foto2.jpg"],
+
+  // LAGU: taruh file lagu (mp3) di folder yang sama, lalu tulis namanya di sini.
+  // Lagu otomatis diputar saat tombol "Buka undangan" ditekan.
+  musik: "lagu.mp3",
+  maps:  "https://maps.app.goo.gl/4joCKGENoC4NhTWS6"
+};
+/* ===================================================== */
+
+function fill(el, src){
+  if(!el || !src) return;
+  el.style.backgroundImage = 'url("' + src + '")';
+  el.classList.add('filled');
+}
+fill(document.getElementById('phCover'), CONFIG.fotoCover);
+fill(document.getElementById('phBg'), CONFIG.latar);
+fill(document.getElementById('phLogoKiri'), CONFIG.logoKiri);
+fill(document.getElementById('phLogoKanan'), CONFIG.logoKanan);
+if(CONFIG.logoTiket){
+  document.getElementById('ticketLogo').setAttribute('href', CONFIG.logoTiket);
+  document.getElementById('ticketSlot').setAttribute('stroke-dasharray','0');
+}
+document.getElementById('mapsBtn').href = CONFIG.maps;
+
+
+/* Galeri + lightbox */
+const grid = document.getElementById('grid');
+const photos = CONFIG.galeri.filter(Boolean);
+CONFIG.galeri.forEach((src,i)=>{
+  const d = document.createElement('div');
+  d.className = 'ph' + (i===0 ? ' wide' : '');
+  d.innerHTML = '<svg><use href="#cam"/></svg><span>Foto ' + (i+1) + (i===0 ? ' (besar)' : '') + '</span>';
+  if(src){
+    fill(d, src);
+    d.tabIndex = 0; d.setAttribute('role','button'); d.setAttribute('aria-label','Lihat foto ' + (i+1));
+    const idx = photos.indexOf(src);
+    d.addEventListener('click', ()=>openLb(idx));
+    d.addEventListener('keydown', e=>{ if(e.key==='Enter') openLb(idx); });
+  }
+  grid.appendChild(d);
+});
+const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
+let cur = 0;
+function openLb(i){ cur=i; lbImg.src=photos[cur]; lb.classList.add('show'); document.getElementById('lbClose').focus(); }
+function step(n){ cur=(cur+n+photos.length)%photos.length; lbImg.src=photos[cur]; }
+document.getElementById('lbClose').onclick = ()=>lb.classList.remove('show');
+document.getElementById('lbPrev').onclick = ()=>step(-1);
+document.getElementById('lbNext').onclick = ()=>step(1);
+lb.addEventListener('click', e=>{ if(e.target===lb) lb.classList.remove('show'); });
+document.addEventListener('keydown', e=>{
+  if(!lb.classList.contains('show')) return;
+  if(e.key==='Escape') lb.classList.remove('show');
+  if(e.key==='ArrowLeft') step(-1);
+  if(e.key==='ArrowRight') step(1);
+});
+let sx=0;
+lb.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; }, {passive:true});
+lb.addEventListener('touchend', e=>{ const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) step(dx<0?1:-1); });
+
+/* Nama tamu dari link: undangan-komuni-chiro.html?to=Om+Yosef */
+const to = new URLSearchParams(location.search).get('to');
+if(to) document.getElementById('guestName').textContent = to;
+
+/* Musik */
+const audio = document.getElementById('audio'), musicBtn = document.getElementById('musicBtn');
+function playMusic(){
+  audio.play().then(()=>musicBtn.classList.add('playing')).catch(()=>musicBtn.classList.remove('playing'));
+}
+if(CONFIG.musik){
+  audio.src = CONFIG.musik; audio.preload = 'auto';
+  musicBtn.classList.add('show');
+  // kalau file lagu belum ada / salah nama, tombol musik disembunyikan
+  audio.addEventListener('error', ()=>musicBtn.classList.remove('show'));
+  musicBtn.onclick = ()=>{ if(audio.paused){ playMusic(); } else { audio.pause(); musicBtn.classList.remove('playing'); } };
+}
+
+/* Buka undangan */
+const cover = document.getElementById('cover');
+document.body.style.overflow = 'hidden';
+document.getElementById('openBtn').onclick = ()=>{
+  cover.classList.add('open'); document.body.style.overflow = '';
+  if(CONFIG.musik) playMusic();
+  setTimeout(()=>cover.style.display='none', 1000);
+};
+
+</script>
+
+<script>
+/* Hitung mundur aktif: Minggu 27 Sep 2026, 14.00 WITA (UTC+8).
+   Dipisah di script sendiri supaya tetap jalan walau bagian lain error. */
+(function(){
+  var target = Date.UTC(2026, 8, 27, 6, 0, 0); // 14.00 WITA = 06.00 UTC
+  var ids = ['cD','cH','cM','cS'];
+  var el = ids.map(function(i){ return document.getElementById(i); });
+  var last = ['','','',''];
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function tick(){
+    var d = target - Date.now();
+    if(d <= 0){
+      document.getElementById('count').style.display = 'none';
+      document.getElementById('countTitle').style.display = 'none';
+      document.getElementById('countDone').style.display = 'block';
+      clearInterval(timer); return;
+    }
+    var v = [Math.floor(d/864e5), pad(Math.floor(d/36e5)%24), pad(Math.floor(d/6e4)%60), pad(Math.floor(d/1e3)%60)];
+    for(var i=0;i<4;i++){
+      var t = String(v[i]);
+      if(t !== last[i]){
+        el[i].textContent = t;
+        el[i].classList.remove('tick'); void el[i].offsetWidth; el[i].classList.add('tick');
+        last[i] = t;
+      }
+    }
+  }
+  var timer = setInterval(tick, 1000);
+  tick();
+})();
+</script>
+</body>
+</html>

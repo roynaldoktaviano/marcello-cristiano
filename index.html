@@ -249,7 +249,7 @@
       <div class="when">
         <div class="col">
           <div class="ico">
-          <svg class="ticket" viewBox="0 0 150 78" aria-label="Tanggal 27 September">
+          <svg class="ticket" id="ticketSvg" viewBox="0 0 150 78" aria-label="Tanggal 27 September">
             <path d="M8 4h134a4 4 0 0 0 4 4v10a6 6 0 0 0 0 12v18a6 6 0 0 0 0 12v10a4 4 0 0 0-4 4H8a4 4 0 0 0-4-4V60a6 6 0 0 0 0-12V30a6 6 0 0 0 0-12V8a4 4 0 0 0 4-4z" fill="url(#gGold)"/>
             <rect x="14" y="10" width="86" height="58" rx="3" fill="#fff"/>
             <rect x="14" y="10" width="86" height="17" rx="3" fill="#1A2A5E"/>
@@ -257,7 +257,6 @@
             <text x="57" y="61" text-anchor="middle" font-family="Open Sans,Arial,sans-serif" font-weight="700" font-size="34" fill="#15151A">27</text>
             <line x1="107" y1="10" x2="107" y2="68" stroke="#8A6520" stroke-width="1.5" stroke-dasharray="3 3"/>
             <circle cx="126" cy="39" r="14" fill="#fff" stroke="#8A6520" stroke-width="1.5" stroke-dasharray="3 2" id="ticketSlot"/>
-            <image id="ticketLogo" x="112" y="25" width="28" height="28" href="" preserveAspectRatio="xMidYMid meet"/>
           </svg>
           </div>
           <p class="kecil">HARI &amp; TANGGAL</p>
@@ -370,8 +369,8 @@
 const CONFIG = {
   fotoCover: "chiro.jpg",        // foto bulat di halaman pembuka, contoh: "chiro-cover.jpg"
   latar:     "stadion.jpg",        // gambar latar stadion (samar), contoh: "stadion.jpg"
-  logoKiri:  "logo.png",        // logo besar samar di pojok kiri atas, contoh: "logo.png"
-  logoKanan: "logo.png",        // logo besar samar di pojok kanan atas
+  logoKiri:  "logo.webp",        // logo besar samar di pojok kiri atas, contoh: "logo.png"
+  logoKanan: "logo.webp",        // logo besar samar di pojok kanan atas
   logoTiket: "logo-tiket.png",        // logo kecil di sobekan tiket tanggal
 
   // Galeri 3 foto potret: foto pertama tampil besar, 2 foto di bawahnya.
@@ -393,9 +392,19 @@ fill(document.getElementById('phCover'), CONFIG.fotoCover);
 fill(document.getElementById('phBg'), CONFIG.latar);
 fill(document.getElementById('phLogoKiri'), CONFIG.logoKiri);
 fill(document.getElementById('phLogoKanan'), CONFIG.logoKanan);
+/* Logo kecil di tiket: gambar hanya dibuat kalau file-nya ada */
 if(CONFIG.logoTiket){
-  document.getElementById('ticketLogo').setAttribute('href', CONFIG.logoTiket);
-  document.getElementById('ticketSlot').setAttribute('stroke-dasharray','0');
+  const probe = new Image();
+  probe.onload = ()=>{
+    const img = document.createElementNS('http://www.w3.org/2000/svg','image');
+    img.setAttribute('x','112'); img.setAttribute('y','25');
+    img.setAttribute('width','28'); img.setAttribute('height','28');
+    img.setAttribute('preserveAspectRatio','xMidYMid meet');
+    img.setAttribute('href', CONFIG.logoTiket);
+    document.getElementById('ticketSvg').appendChild(img);
+    document.getElementById('ticketSlot').setAttribute('stroke-dasharray','0');
+  };
+  probe.src = CONFIG.logoTiket;
 }
 document.getElementById('mapsBtn').href = CONFIG.maps;
 

@@ -66,9 +66,9 @@
   .cover{position:fixed;inset:0;z-index:50;background:var(--putih);display:flex;flex-direction:column;transition:transform .9s cubic-bezier(.7,0,.2,1)}
   .cover.open{transform:translateY(-100%)}
   .cover-body{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
-  .cover .photo{width:168px;height:168px;border-radius:50%;margin:22px auto 16px;padding:4px;background:var(--gold-grad)}
-  .cover .photo .ph{width:100%;height:100%;border-radius:50%;border:0;background-color:#fff}
-  .cover .photo .ph.filled{background-size:var(--zoom,160%);background-position:50% var(--posY,8%)}
+  .cover .photo{width:min(64vw,250px,34vh);aspect-ratio:4/5;border-radius:16px;margin:22px auto 16px;padding:4px;background:var(--gold-grad);box-shadow:0 14px 30px rgba(26,42,94,.18)}
+  .cover .photo .ph{width:100%;height:100%;border-radius:12px;border:0;background-color:#fff}
+  .cover .photo .ph.filled{background-size:var(--zoom,cover);background-position:50% var(--posY,20%)}
   .cover .t-nama{font-size:42px;margin-top:0}
   .cover .to{color:var(--abu);margin-top:18px;font-size:14px}
   .cover .guest{font-weight:700;font-size:19px;color:var(--navy);margin:2px 0 22px}
@@ -142,21 +142,36 @@
   .sw span{font-weight:700;font-size:15px}
 
   /* galeri */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .grid .ph{aspect-ratio:4/5;border-radius:10px}
-  .grid .ph.wide{grid-column:1/-1;aspect-ratio:4/5}
-  .grid .ph.filled{background-position:50% 18%}
-  .grid .ph.filled{cursor:pointer}
-  .lightbox{position:fixed;inset:0;z-index:60;background:rgba(14,20,45,.94);display:none;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(20px + env(safe-area-inset-bottom,0px))}
-  .lightbox.show{display:flex}
-  .lightbox img{max-width:100%;max-height:82vh;border-radius:6px}
+  .marquee{position:relative;margin:0 calc(var(--pad) * -1);overflow:hidden;padding:6px 0 10px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .mq-track{display:flex;gap:12px;width:max-content;animation:mq var(--dur,30s) linear infinite}
+  .marquee.paused .mq-track{animation-play-state:paused}
+  @keyframes mq{from{transform:translateX(0)}to{transform:translateX(calc(var(--w,1000px) * -1))}}
+  .slide{flex:0 0 auto;width:160px;aspect-ratio:4/5;border-radius:12px;box-shadow:0 8px 18px rgba(26,42,94,.14)}
+  .slide.filled{background-position:50% 18%;cursor:zoom-in}
+
+  /* modal foto */
+  .lightbox{position:fixed;inset:0;z-index:60;background:rgba(10,16,38,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:calc(64px + env(safe-area-inset-top,0px)) 16px calc(28px + env(safe-area-inset-bottom,0px));opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+  .lightbox.show{opacity:1;visibility:visible}
+  .lightbox img{max-width:100%;max-height:74vh;border-radius:10px;border:3px solid var(--emas-muda);transform:scale(.94);transition:transform .3s}
+  .lightbox.show img{transform:none}
+  .lb-count{color:#DCE2F2;font-size:13px;font-weight:700;letter-spacing:.14em}
   .lb-btn{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;width:44px;height:44px;border-radius:50%;font-size:24px;line-height:1;cursor:pointer}
   .lb-close{top:calc(14px + env(safe-area-inset-top,0px));right:14px}
   .lb-prev{left:10px;top:50%;transform:translateY(-50%)}
   .lb-next{right:10px;top:50%;transform:translateY(-50%)}
 
+  /* turut mengundang */
+  .invite-card{position:relative;max-width:320px;margin:0 auto;padding:26px 20px;border-radius:14px;background:var(--putih);
+    border:1.5px solid var(--emas-muda);box-shadow:0 0 0 5px var(--putih),0 0 0 6.5px var(--garis),0 10px 24px rgba(26,42,94,.07)}
+  .invite-list{list-style:none;margin:0;padding:0}
+  .invite-list li{font-size:17px;font-weight:600;color:var(--tinta);padding:9px 0}
+  .invite-list li + li{border-top:1px dashed var(--emas-muda)}
+  .ic-ball{position:absolute;width:26px;height:26px}
+  .ic-ball.tl{left:-10px;top:-10px}
+  .ic-ball.br{right:-10px;bottom:-10px}
+
   .closing{font-size:15px;color:var(--abu);max-width:32ch;margin:0 auto}
-  .sign{font-family:var(--script);font-size:24px;color:var(--navy);margin-top:6px}
 
   .music{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:46px;height:46px;border-radius:50%;border:2px solid var(--emas);background:var(--navy);color:#fff;cursor:pointer;display:none;align-items:center;justify-content:center}
   .music.show{display:flex}
@@ -174,6 +189,7 @@
   }
   @media (prefers-reduced-motion:reduce){
     .live,.count b.tick{animation:none}
+    .mq-track{animation-duration:calc(var(--dur,30s) * 3)}.lightbox,.lightbox img{transition:none}
     .cover{transition:none}.music.playing .ic-play{animation:none}html{scroll-behavior:auto}
   }
 </style>
@@ -193,6 +209,11 @@
       <circle cx="60" cy="7" r="6" fill="#fff" stroke="#1A2A5E" stroke-width="1.3"/>
       <polygon points="60,4 62.8,6 61.8,9.2 58.2,9.2 57.2,6" fill="#1A2A5E"/>
       <circle cx="50" cy="7" r="1.6" fill="#B8923A"/><circle cx="70" cy="7" r="1.6" fill="#B8923A"/>
+    </symbol>
+    <symbol id="miniball" viewBox="0 0 26 26">
+      <circle cx="13" cy="13" r="12" fill="#fff" stroke="#1A2A5E" stroke-width="1.6"/>
+      <polygon points="13,7 18.7,11.1 16.5,17.9 9.5,17.9 7.3,11.1" fill="#1A2A5E"/>
+      <path d="M13 7V1M18.7 11.1l5.6-1.8M16.5 17.9l3.4 4.8M9.5 17.9l-3.4 4.8M7.3 11.1 1.7 9.3" stroke="#1A2A5E" stroke-width="1.4"/>
     </symbol>
     <symbol id="cam" viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v13H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
   </defs>
@@ -340,14 +361,26 @@
     <h2>Galeri Chiro</h2>
     <svg class="orn"><use href="#orn"/></svg>
     <p class="sub">Ketuk foto untuk melihat lebih besar</p>
-    <!-- PLACEHOLDER: foto galeri (CONFIG.galeri). Foto pertama tampil lebar -->
-    <div class="grid" id="grid"></div>
+    <!-- PLACEHOLDER: foto galeri (CONFIG.galeri) — berjalan terus seperti marquee -->
+    <div class="marquee" id="marquee">
+      <div class="mq-track" id="track"></div>
+    </div>
+  </section>
+
+  <!-- ================= TURUT MENGUNDANG ================= -->
+  <section class="sec">
+    <h2>Turut Mengundang</h2>
+    <svg class="orn"><use href="#orn"/></svg>
+    <div class="invite-card">
+      <svg class="ic-ball tl" aria-hidden="true"><use href="#miniball"/></svg>
+      <svg class="ic-ball br" aria-hidden="true"><use href="#miniball"/></svg>
+      <ul class="invite-list" id="turut"></ul>
+    </div>
   </section>
 
   <!-- ================= PENUTUP ================= -->
-  <section class="sec">
+  <section class="sec soft">
     <p class="closing">Kehadiran dan doa restu Bapak/Ibu/Saudara/i merupakan kebahagiaan bagi kami. Terima kasih, Tuhan memberkati.</p>
-    <p class="sign">Keluarga Besar Meko</p>
   </section>
 
   <div class="goldbar"></div>
@@ -356,6 +389,7 @@
 <!-- Lightbox galeri -->
 <div class="lightbox" id="lb" role="dialog" aria-label="Foto galeri">
   <img id="lbImg" alt="Foto Chiro">
+  <p class="lb-count" id="lbCount">1 / 3</p>
   <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Tutup">×</button>
   <button class="lb-btn lb-prev" id="lbPrev" type="button" aria-label="Foto sebelumnya">‹</button>
   <button class="lb-btn lb-next" id="lbNext" type="button" aria-label="Foto berikutnya">›</button>
@@ -372,18 +406,27 @@
    CONFIG — ISI BAGIAN INI DENGAN FOTO & DATA KAMU
    ===================================================== */
 const CONFIG = {
-  fotoCover: "chiro.jpg",
+  fotoCover: "cover.jpeg",
   // Atur posisi foto bulat di cover:
-  //   coverZoom  : makin besar = wajah makin dekat (contoh 130, 160, 200)
+  //   coverZoom  : 100 = foto pas memenuhi kotak; makin besar = makin dekat (contoh 120, 150)
   //   coverPosisi: 0 = bagian paling atas foto, makin besar = foto turun
-  coverZoom:   160,
-  coverPosisi: 8,        // foto bulat di halaman pembuka, contoh: "chiro-cover.jpg"
+  coverZoom:   100,
+  coverPosisi: 20,
   latar:     "stadion.jpg",        // gambar latar stadion (samar), contoh: "stadion.jpg"
   logoKiri:  "logo.webp",        // logo besar samar di pojok kiri atas, contoh: "logo.png"
   logoKanan: "logo.webp",        // logo besar samar di pojok kanan atas
 
-  // Galeri 3 foto potret: foto pertama tampil besar, 2 foto di bawahnya.
-  galeri: ["chiro.jpg", "foto1.jpg", "foto2.jpg"],
+  // Galeri: foto berjalan terus (marquee). Tambah / kurangi sesuka hati.
+  // Nama file yang tidak ada di folder otomatis dilewati.
+  galeri: ["chiro.jpg", "foto1.jpg", "foto2.jpg", "foto3.jpeg", "foto4.jpeg", "foto5.jpeg","foto6.jpeg","foto7.jpeg","foto8.jpeg","foto9.jpeg"],
+
+  // TURUT MENGUNDANG: tambah / hapus nama di sini
+  turutMengundang: [
+    "Opa David Meko",
+    "Alm. Opa Tate",
+    "Oma Petronela Boa",
+    "Oma Meri Dhongo"
+  ],
 
   // LAGU: taruh file lagu (mp3) di folder yang sama, lalu tulis namanya di sini.
   // Lagu otomatis diputar saat tombol "Buka undangan" ditekan.
@@ -399,47 +442,82 @@ function fill(el, src){
 }
 fill(document.getElementById('phCover'), CONFIG.fotoCover);
 (function(){ const c=document.getElementById('phCover');
-  c.style.setProperty('--zoom',(CONFIG.coverZoom||160)+'%');
-  c.style.setProperty('--posY',(CONFIG.coverPosisi==null?8:CONFIG.coverPosisi)+'%'); })();
+  const z = CONFIG.coverZoom||100; c.style.setProperty('--zoom', z<=100 ? 'cover' : z+'%');
+  c.style.setProperty('--posY',(CONFIG.coverPosisi==null?20:CONFIG.coverPosisi)+'%'); })();
 fill(document.getElementById('phBg'), CONFIG.latar);
 fill(document.getElementById('phLogoKiri'), CONFIG.logoKiri);
 fill(document.getElementById('phLogoKanan'), CONFIG.logoKanan);
 document.getElementById('mapsBtn').href = CONFIG.maps;
 
+/* Turut mengundang */
+const turut = document.getElementById('turut');
+(CONFIG.turutMengundang||[]).forEach(n=>{ const li=document.createElement('li'); li.textContent=n; turut.appendChild(li); });
 
-/* Galeri + lightbox */
-const grid = document.getElementById('grid');
-const photos = CONFIG.galeri.filter(Boolean);
-CONFIG.galeri.forEach((src,i)=>{
+
+/* Galeri: marquee berjalan + modal foto */
+const marquee = document.getElementById('marquee'), track = document.getElementById('track');
+let photos = [];
+function loadOk(src){ return new Promise(r=>{ if(!src) return r(false); const im=new Image(); im.onload=()=>r(true); im.onerror=()=>r(false); im.src=src; }); }
+function makeSlide(src, idx){
   const d = document.createElement('div');
-  d.className = 'ph' + (i===0 ? ' wide' : '');
-  d.innerHTML = '<svg><use href="#cam"/></svg><span>Foto ' + (i+1) + (i===0 ? ' (besar)' : '') + '</span>';
+  d.className = 'ph slide';
+  d.innerHTML = '<svg><use href="#cam"/></svg><span>Foto ' + (idx+1) + '</span>';
   if(src){
     fill(d, src);
-    d.tabIndex = 0; d.setAttribute('role','button'); d.setAttribute('aria-label','Lihat foto ' + (i+1));
-    const idx = photos.indexOf(src);
+    d.tabIndex = 0; d.setAttribute('role','button'); d.setAttribute('aria-label','Lihat foto ' + (idx+1));
     d.addEventListener('click', ()=>openLb(idx));
     d.addEventListener('keydown', e=>{ if(e.key==='Enter') openLb(idx); });
   }
-  grid.appendChild(d);
+  return d;
+}
+function buildMarquee(){
+  track.innerHTML = '';
+  const list = photos.length ? photos : ['', '', '', '', ''];
+  // satu set diulang sampai lebih lebar dari layar, lalu digandakan agar berputar mulus
+  const set = document.createElement('div'); set.style.cssText='display:flex;gap:12px';
+  let guard = 0;
+  do { list.forEach((src,i)=>set.appendChild(makeSlide(src,i))); guard++; }
+  while(guard < 8 && set.children.length * 172 < marquee.clientWidth + 200);
+  const w = set.children.length * 172; // lebar slide 160 + jarak 12
+  const clone = set.cloneNode(true);
+  // pasang ulang klik di salinan
+  [...clone.children].forEach((c,k)=>{ const idx = k % list.length; if(list[idx]){ c.addEventListener('click',()=>openLb(idx)); c.addEventListener('keydown',e=>{ if(e.key==='Enter') openLb(idx); }); } });
+  track.appendChild(set); track.appendChild(clone);
+  track.style.setProperty('--w', w + 'px');
+  track.style.setProperty('--dur', Math.max(18, w / 40) + 's'); // ±40px per detik
+}
+Promise.all(CONFIG.galeri.map(loadOk)).then(ok=>{
+  photos = CONFIG.galeri.filter((s,i)=>ok[i]);
+  buildMarquee();
 });
-const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
+/* berhenti saat disentuh / diarahkan kursor */
+let resumeT;
+function hold(){ marquee.classList.add('paused'); clearTimeout(resumeT); }
+function release(){ clearTimeout(resumeT); resumeT = setTimeout(()=>{ if(!lb.classList.contains('show')) marquee.classList.remove('paused'); }, 1200); }
+marquee.addEventListener('mouseenter', hold); marquee.addEventListener('mouseleave', release);
+marquee.addEventListener('touchstart', hold, {passive:true}); marquee.addEventListener('touchend', release);
+
+/* modal */
+const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg'), lbCount = document.getElementById('lbCount');
 let cur = 0;
-function openLb(i){ cur=i; lbImg.src=photos[cur]; lb.classList.add('show'); document.getElementById('lbClose').focus(); }
-function step(n){ cur=(cur+n+photos.length)%photos.length; lbImg.src=photos[cur]; }
-document.getElementById('lbClose').onclick = ()=>lb.classList.remove('show');
+function showLb(){ lbImg.src = photos[cur]; lbCount.textContent = (cur+1) + ' / ' + photos.length; }
+function openLb(i){ if(i<0 || !photos.length) return; cur=i; showLb(); lb.classList.add('show'); document.body.style.overflow='hidden'; hold(); document.getElementById('lbClose').focus(); }
+function closeLb(){ lb.classList.remove('show'); document.body.style.overflow=''; release(); }
+function step(n){ cur=(cur+n+photos.length)%photos.length; showLb(); }
+document.getElementById('lbClose').onclick = closeLb;
 document.getElementById('lbPrev').onclick = ()=>step(-1);
 document.getElementById('lbNext').onclick = ()=>step(1);
-lb.addEventListener('click', e=>{ if(e.target===lb) lb.classList.remove('show'); });
+lb.addEventListener('click', e=>{ if(e.target===lb) closeLb(); });
 document.addEventListener('keydown', e=>{
   if(!lb.classList.contains('show')) return;
-  if(e.key==='Escape') lb.classList.remove('show');
+  if(e.key==='Escape') closeLb();
   if(e.key==='ArrowLeft') step(-1);
   if(e.key==='ArrowRight') step(1);
 });
 let sx=0;
 lb.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; }, {passive:true});
 lb.addEventListener('touchend', e=>{ const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) step(dx<0?1:-1); });
+
 
 /* Nama tamu dari link: undangan-komuni-chiro.html?to=Om+Yosef */
 const to = new URLSearchParams(location.search).get('to');
